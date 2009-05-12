@@ -71,6 +71,11 @@ void process_jpeg(void *ptr, size_t sz, const char *filename)
     SHA1_Update(&hashsum, c-1, 1);
   }
 
+
+  /* 
+   * Construct the hexdigest
+   */
+
   char sha[SHA1_DIGEST_STRING_LENGTH];
   uint8_t digest[20];
 
@@ -89,12 +94,10 @@ void process_jpeg(void *ptr, size_t sz, const char *filename)
 
 void process_file(const char* filename)
 {
-  fprintf(stderr, "file: %s\n", filename);
-
   int fd = open(filename, O_RDONLY);
   if (fd == -1)
   {
-    printf("! ERROR opening file\n");
+    printf("!ERROR opening file\t%s\n", filename);
     return;
   }
 
@@ -102,7 +105,7 @@ void process_file(const char* filename)
   if (stat(filename, &buf) != 0)
   {
     close(fd);
-    printf("! ERROR stat file\n");
+    printf("!ERROR stat file\t%s\n", filename);
     return;
   }
 
@@ -110,7 +113,7 @@ void process_file(const char* filename)
   if (ptr == MAP_FAILED)
   {
     close(fd);
-    printf("! ERROR mmap file\n");
+    printf("!ERROR mmap file\t%s\n", filename);
     return;
   }
 
@@ -154,7 +157,7 @@ int main(int argc, char **argv)
     }
     else
     {
-      printf("! INVALID-FILENAME <%s>\n", filename);
+      printf("!ERROR Invalid filename\t%s\n", filename);
     }
   }
 
