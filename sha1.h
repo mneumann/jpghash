@@ -11,6 +11,7 @@
 #ifndef _SYS_SHA1_H_
 #define	_SYS_SHA1_H_
 
+#include <unistd.h>
 #include <stdint.h>
 
 typedef struct {
@@ -19,10 +20,10 @@ typedef struct {
 	uint8_t buffer[64];
 } SHA1_CTX;
 
-void	SHA1_Transform _((uint32_t state[5], const uint8_t buffer[64]));
-void	SHA1_Init _((SHA1_CTX *context));
-void	SHA1_Update _((SHA1_CTX *context, const uint8_t *data, size_t len));
-void	SHA1_Finish _((SHA1_CTX *context, uint8_t digest[20]));
+void	SHA1_Transform (uint32_t state[5], const uint8_t buffer[64]);
+void	SHA1_Init (SHA1_CTX *context);
+void	SHA1_Update (SHA1_CTX *context, const uint8_t *data, size_t len);
+void	SHA1_Finish (SHA1_CTX *context, uint8_t digest[20]);
 
 #define SHA1_BLOCK_LENGTH		64
 #define SHA1_DIGEST_LENGTH		20
