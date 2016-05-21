@@ -135,16 +135,35 @@ int main(int argc, char **argv)
    */
   for (int i = 1; i < argc; ++i)
   {
-    int type = strtol(argv[i], NULL, 16);
-    assert(type > 0 && type <= 255);
-    //int type = atoi(argv[i]);
-    char h[3];
-    h[0] = hex[type >> 4];
-    h[1] = hex[type & 15];
-    h[2] = '\000';
- 
-    fprintf(stderr, "Exclude 0x%s\n", h);
-    want_type[type] = 0;
+    int type, end_type;
+    char *ptr;
+    char *ptr2;
+
+    type = strtol(argv[i], &ptr, 16);
+    assert(type >= 0 && type <= 255);
+
+    if (*ptr == '\000')
+    {
+      end_type = type;
+    }
+    else
+    {
+      assert(*ptr == '-');
+      end_type = strtol(ptr+1, &ptr2, 16);
+      assert(*ptr2 == '\000');
+      assert(end_type >= 0 && end_type <= 255);
+      assert(end_type >= type);
+    }
+
+    for (int t=type; t <= end_type; ++t)
+    {
+      char h[3];
+      h[0] = hex[t >> 4];
+      h[1] = hex[t & 15];
+      h[2] = '\000';
+      fprintf(stderr, "Exclude 0x%s\n", h);
+      want_type[t] = 0;
+    }
   }
 
   while (fgets(filename, 1024, stdin)) 
